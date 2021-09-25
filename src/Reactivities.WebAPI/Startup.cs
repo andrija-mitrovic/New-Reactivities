@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Reactivities.Infrastructure.Data;
+using Reactivities.WebAPI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +30,7 @@ namespace Reactivities.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Reactivities.WebAPI", Version = "v1" });
-            });
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
+            services.AddApplicationService(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
