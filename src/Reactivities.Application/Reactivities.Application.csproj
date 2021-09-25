@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reactivities.Domain\Reactivities.Domain.csproj" />
+    <ProjectReference Include="..\Reactivities.Infrastructure\Reactivities.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
