@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reactivities.Infrastructure.Entities
+namespace Reactivities.Domain.Entities
 {
     public class Activity
     {
