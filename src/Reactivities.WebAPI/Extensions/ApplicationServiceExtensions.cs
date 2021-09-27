@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Reactivities.Application.Features.Activities.Queries;
 using Reactivities.Infrastructure.Data;
 
 namespace Reactivities.WebAPI.Extensions
@@ -25,6 +27,8 @@ namespace Reactivities.WebAPI.Extensions
                     policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
                 });
             });
+
+            services.AddMediatR(typeof(GetActivityListQuery).Assembly);
 
             return services;
         }
