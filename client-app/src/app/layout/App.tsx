@@ -1,22 +1,31 @@
-import React from 'react';
+import axios from "axios";
+import React, { Fragment, useEffect, useState } from "react";
+import { Container, List } from "semantic-ui-react";
+import { Activity } from "../models/activity";
+import NavBar from "./NavBar";
 
 function App() {
+  const [activities, setActivities] = useState<Activity[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<Activity[]>("http://localhost:5000/api/activities")
+      .then((response: any) => {
+        setActivities(response.data);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <Container style={{ marginTop: "7em" }}>
+        <List>
+          {activities.map((activity) => {
+            <List.Item key={activity.id}>{activity.title}</List.Item>;
+          })}
+        </List>
+      </Container>
+    </>
   );
 }
 
