@@ -4,7 +4,11 @@ import { Activity } from "../models/activity";
 
 export default class ActivityStore {
     activities: Activity[] = [];
+<<<<<<< HEAD
     selectedActivity: Activity | undefined = undefined;
+=======
+    selectedActivity: Activity | null = null;
+>>>>>>> 0e06e61c74b0802040af5ee075d43caecbd775a2
     editMode = false;
     loading = false;
     loadingInitial = false;
