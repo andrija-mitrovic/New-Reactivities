@@ -23,7 +23,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
         {
             _logger.LogInformation("CreateActivityHandler.Handler - Creating activity.");
 
-            _context.Activities.Add(request.Activity);
+            await _context.Activities.AddAsync(request.Activity, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
 
