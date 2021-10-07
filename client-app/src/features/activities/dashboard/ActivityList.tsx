@@ -3,13 +3,9 @@ import { SyntheticEvent, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 
-interface Props {
-  deleteActivity: (id: string) => void;
-}
-
-export default observer(function ActivityList({ deleteActivity }: Props) {
+export default observer(function ActivityList() {
   const { activityStore } = useStore();
-  const { activities, selectActivity, loading } = activityStore;
+  const { activities, selectActivity, loading, deleteActivity } = activityStore;
 
   const [target, setTarget] = useState("");
 
