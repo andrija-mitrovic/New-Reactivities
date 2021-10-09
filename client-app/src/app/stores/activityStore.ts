@@ -99,6 +99,7 @@ export default class ActivityStore {
             this.loadingInitial = true;
             try {
                 activity = await agent.Activities.details(id);
+                this.selectedActivity = activity;
                 this.setActivity(activity);
                 this.setLoadingInitial(false);
             } catch (error) {
