@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default observer(function ActivityList() {
   const { activityStore } = useStore();
-  const { activitiesByDate, selectActivity, loading, deleteActivity } = activityStore;
+  const { activitiesByDate, loading, deleteActivity } = activityStore;
 
   const [target, setTarget] = useState("");
 

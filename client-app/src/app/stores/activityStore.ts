@@ -15,7 +15,7 @@ export default class ActivityStore {
     }
 
     get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort((a, b) => 
+        return Array.from(this.activityRegistry.values()).sort((a, b) =>
             Date.parse(a.date) - Date.parse(b.date));
     }
 
@@ -24,8 +24,7 @@ export default class ActivityStore {
         try {
             const activities = await agent.Activities.list();
             activities.forEach(activity => {
-                activity.date = activity.date.split('T')[0];
-                this.activityRegistry.set(activity.id, activity);
+                this.setActivity(activity);
             })
             this.setLoadingInitial(false);
         }
@@ -37,23 +36,6 @@ export default class ActivityStore {
 
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
-    }
-
-    selectActivity = (id: string) => {
-        this.selectedActivity = this.activityRegistry.get(id);
-    }
-
-    cancelSelectActivity = () => {
-        this.selectedActivity = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectActivity(id) : this.cancelSelectActivity();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
     }
 
     createActivity = async (activity: Activity) => {
@@ -107,5 +89,31 @@ export default class ActivityStore {
                 this.loading = false;
             })
         }
+    }
+
+    loadActivity = async (id: string) => {
+        let activity = this.getActivity(id);
+        if (activity) {
+            this.selectedActivity = activity;
+        } else {
+            this.loadingInitial = true;
+            try {
+                activity = await agent.Activities.details(id);
+                this.setActivity(activity);
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private getActivity = (id: string) => {
+        return this.activityRegistry.get(id);
+    }
+
+    private setActivity = (activity: Activity) => {
+        activity.date = activity.date.split('T')[0];
+        this.activityRegistry.set(activity.id, activity);
     }
 }

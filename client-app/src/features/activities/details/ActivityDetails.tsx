@@ -6,9 +6,7 @@ import { observer } from "mobx-react-lite";
 export default observer(function ActivityDetails() {
   const { activityStore } = useStore();
   const {
-    selectedActivity: activity,
-    cancelSelectActivity,
-    openForm,
+    selectedActivity: activity
   } = activityStore;
 
   if(!activity) return <LoadingComponent />
@@ -26,13 +24,11 @@ export default observer(function ActivityDetails() {
       <Card.Content extra>
         <Button.Group widths="2">
           <Button
-            onClick={() => openForm(activity.id)}
             basic
             color="blue"
             content="Edit"
           />
           <Button
-            onClick={cancelSelectActivity}
             basic
             color="grey"
             content="Cancel"
