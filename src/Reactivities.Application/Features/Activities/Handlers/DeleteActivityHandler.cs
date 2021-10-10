@@ -27,7 +27,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            //if (activity == null) return null;
+            if (activity == null) return null;
 
             _context.Activities.Remove(activity);
 
