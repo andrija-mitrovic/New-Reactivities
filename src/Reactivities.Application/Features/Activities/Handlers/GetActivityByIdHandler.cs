@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Queries;
+using Reactivities.Application.Helpers;
 using Reactivities.Domain.Entities;
 using Reactivities.Infrastructure.Data;
 using System.Threading;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Reactivities.Application.Features.Activities.Handlers
 {
-    public class GetActivityByIdHandler : IRequestHandler<GetActivityByIdQuery, Activity>
+    public class GetActivityByIdHandler : IRequestHandler<GetActivityByIdQuery, Result<Activity>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<GetActivityByIdHandler> _logger;
@@ -21,11 +22,11 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger = logger;
         }
 
-        public async Task<Activity> Handle(GetActivityByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Activity>> Handle(GetActivityByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"GetActivityByIdHandler.Handle - Retrieving activity with id={request.Id}.");
 
-            return await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            return Result<Activity>.Success(await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken));
         }
     }
 }

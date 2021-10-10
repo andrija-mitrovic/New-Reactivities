@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Commands;
+using Reactivities.Application.Helpers;
 using Reactivities.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Reactivities.Application.Features.Activities.Handlers
 {
-    public class EditActivityHandler : IRequestHandler<EditActivityCommand>
+    public class EditActivityHandler : IRequestHandler<EditActivityCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<EditActivityHandler> _logger;
@@ -24,18 +25,22 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(EditActivityCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(EditActivityCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"EditActivityHandler.Handle - Editing activity with id={request.Activity.Id}.");
 
             var activity = await _context.Activities
                 .FirstOrDefaultAsync(x => x.Id == request.Activity.Id, cancellationToken);
 
+            if (activity == null) return null;
+
             activity.Id = request.Activity.Id;
 
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            return Unit.Value;
+            if (!result) Result<Unit>.Failure("Failed to update activity");
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

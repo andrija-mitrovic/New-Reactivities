@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Commands;
+using Reactivities.Application.Helpers;
 using Reactivities.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reactivities.Application.Features.Activities.Handlers
 {
-    public class CreateActivityHandler : IRequestHandler<CreateActivityCommand>
+    public class CreateActivityHandler : IRequestHandler<CreateActivityCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CreateActivityHandler> _logger;
@@ -19,15 +20,17 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateActivityHandler.Handler - Creating activity.");
 
             await _context.Activities.AddAsync(request.Activity, cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            return Unit.Value;
+            if (!result) return Result<Unit>.Failure("Failed to create activity");
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

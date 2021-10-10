@@ -2,13 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Commands;
+using Reactivities.Application.Helpers;
 using Reactivities.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reactivities.Application.Features.Activities.Handlers
 {
-    public class DeleteActivityHandler : IRequestHandler<DeleteActivityCommand>
+    public class DeleteActivityHandler : IRequestHandler<DeleteActivityCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DeleteActivityCommand> _logger;
@@ -20,17 +21,21 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"DeleteActivityHandler.Handle - Deleteing activity with id={request.Id}.");
 
             var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
+            if (activity == null) return null;
+
             _context.Activities.Remove(activity);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            return Unit.Value;
+            if (!result) Result<Unit>.Failure("Failed to delete activity");
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

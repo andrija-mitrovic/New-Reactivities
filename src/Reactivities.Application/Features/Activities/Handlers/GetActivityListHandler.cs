@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Queries;
+using Reactivities.Application.Helpers;
 using Reactivities.Domain.Entities;
 using Reactivities.Infrastructure.Data;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Reactivities.Application.Features.Activities.Handlers
 {
-    public class GetActivityListHandler : IRequestHandler<GetActivityListQuery, List<Activity>>
+    public class GetActivityListHandler : IRequestHandler<GetActivityListQuery, Result<List<Activity>>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<GetActivityListHandler> _logger;
@@ -22,11 +23,11 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger = logger;
         }
 
-        public async Task<List<Activity>> Handle(GetActivityListQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<Activity>>> Handle(GetActivityListQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetActivityListHandler.Handle - Retrieving activities.");
 
-            return await _context.Activities.ToListAsync(cancellationToken);
+            return Result<List<Activity>>.Success(await _context.Activities.ToListAsync(cancellationToken));
         }
     }
 }
