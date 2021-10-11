@@ -1,11 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { Button, Form, FormField, Label, Segment } from "semantic-ui-react";
+import { Button, Form, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import MyTextArea from "../../../app/common/form/MyTextArea";
 import { useStore } from "../../../app/stores/store";
 import { Link } from "react-router-dom";
-import { ErrorMessage, Formik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 
@@ -74,13 +75,8 @@ export default observer(function ActivityForm() {
       >
         {({ values: activity, handleChange, handleSubmit }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete="off">
-            <FormField>
             <MyTextInput name="title" placeholder="Title" />
-              <ErrorMessage
-                name="title"
-                render={(error) => <Label basic color="red" content={error} />}
-              />
-            </FormField>
+            <MyTextArea rows={3} placeholder="Description" name="description" />
             <Form.TextArea placeholder="Descripton" name="description" />
             <Form.Input placeholder="Category" name="category" />
             <Form.Input type="date" placeholder="Date" name="date" />
