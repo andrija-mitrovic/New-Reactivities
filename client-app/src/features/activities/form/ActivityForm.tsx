@@ -1,14 +1,13 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Button, Form, FormField, Label, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
 import { ErrorMessage, Formik } from "formik";
-import { values } from "mobx";
 import * as Yup from "yup";
+import MyTextInput from "../../../app/common/form/MyTextInput";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -76,7 +75,7 @@ export default observer(function ActivityForm() {
         {({ values: activity, handleChange, handleSubmit }) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete="off">
             <FormField>
-              <Form.Input placeholder="Title" name="title" />
+            <MyTextInput name="title" placeholder="Title" />
               <ErrorMessage
                 name="title"
                 render={(error) => <Label basic color="red" content={error} />}
@@ -85,8 +84,8 @@ export default observer(function ActivityForm() {
             <Form.TextArea placeholder="Descripton" name="description" />
             <Form.Input placeholder="Category" name="category" />
             <Form.Input type="date" placeholder="Date" name="date" />
-            <Form.Input placeholder="City" name="city" />
-            <Form.Input placeholder="Venue" name="venue" />
+            <MyTextInput placeholder="City" name="city" />
+            <MyTextInput placeholder="Venue" name="venue" />
             <Button
               loading={loading}
               floated="right"
