@@ -8,7 +8,9 @@ import { useStore } from "../../../app/stores/store";
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { categoryOptions } from "../../../app/common/options/categoryOptions";
 import MyTextInput from "../../../app/common/form/MyTextInput";
+import MySelectInput from "../../../app/common/form/MySelectInput";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -78,7 +80,11 @@ export default observer(function ActivityForm() {
             <MyTextInput name="title" placeholder="Title" />
             <MyTextArea rows={3} placeholder="Description" name="description" />
             <Form.TextArea placeholder="Descripton" name="description" />
-            <Form.Input placeholder="Category" name="category" />
+            <MySelectInput
+              options={categoryOptions}
+              placeholder="Category"
+              name="category"
+            />
             <Form.Input type="date" placeholder="Date" name="date" />
             <MyTextInput placeholder="City" name="city" />
             <MyTextInput placeholder="Venue" name="venue" />
