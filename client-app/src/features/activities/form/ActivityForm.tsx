@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Form, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import { useStore } from "../../../app/stores/store";
@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { categoryOptions } from "../../../app/common/options/categoryOptions";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
+import MyDateInput from "../../../app/common/form/MyDateInput";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -36,6 +37,11 @@ export default observer(function ActivityForm() {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("The activity title is required"),
+    description: Yup.string().required("The activity description is required"),
+    category: Yup.string().required("The activity categoty is required"),
+    date: Yup.string().required("Date is required").nullable(),
+    city: Yup.string().required(),
+    venue: Yup.string().required(),
   });
 
   useEffect(() => {
@@ -85,7 +91,8 @@ export default observer(function ActivityForm() {
               placeholder="Category"
               name="category"
             />
-            <Form.Input type="date" placeholder="Date" name="date" />
+            <MyDateInput showTimeSelect timeCaption='time' dateFormat='MMMM d, yyyy h:mm aa' placeholderText="Date" name="date" />
+            <Header content='Location Details' sub color='teal'/>
             <MyTextInput placeholder="City" name="city" />
             <MyTextInput placeholder="Venue" name="venue" />
             <Button
