@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Reactivities.Application.Services;
 using Reactivities.Domain.Entities;
 using Reactivities.Infrastructure.Data;
 
@@ -18,6 +19,7 @@ namespace Reactivities.Application.Extensions
             .AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthentication();
+            services.AddScoped<TokenService>();
 
             return services;
         }
