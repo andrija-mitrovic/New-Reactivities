@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Reactivities.Application.Extensions;
 using Reactivities.Application.Features.Activities.Commands;
 using Reactivities.WebAPI.Extensions;
 using Reactivities.WebAPI.Middleware;
@@ -27,6 +28,7 @@ namespace Reactivities.WebAPI
                 config.RegisterValidatorsFromAssemblyContaining<CreateActivityCommand>();
             });
             services.AddApplicationService(_config);
+            services.AddIdentityServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
