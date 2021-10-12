@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Reactivities.Domain.Entities;
 using Reactivities.Infrastructure.Data;
 using System;
 using System.Threading.Tasks;
@@ -26,8 +28,9 @@ namespace Reactivities.WebAPI
                 logger.LogInformation("Program.Main - Seeding data started.");
 
                 var context = services.GetRequiredService<ApplicationDbContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 await context.Database.MigrateAsync();
-                await ApplicationDbContextSeed.SeedDataAsync(context);
+                await ApplicationDbContextSeed.SeedDataAsync(context, userManager);
 
                 logger.LogInformation("Program.Main - Seeding data finished.");
             }
