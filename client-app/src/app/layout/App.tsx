@@ -1,4 +1,4 @@
-import { Container, ModalContent } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { observer } from "mobx-react-lite";
@@ -15,6 +15,7 @@ import LoginForm from "../../features/users/LoginForm";
 import { useStore } from "../stores/store";
 import { useEffect } from "react";
 import LoadingComponent from "./LoadingComponent";
+import ModalContainer from "../common/modals/ModalContainer";
 
 function App() {
   const location = useLocation();
@@ -34,7 +35,7 @@ function App() {
   return (
     <>
       <ToastContainer position="bottom-right" hideProgressBar />
-      <ModalContent/>
+      <ModalContainer/>
       <Route exact path="/" component={HomePage} />
       <Route
         path={"/(.+)"}
