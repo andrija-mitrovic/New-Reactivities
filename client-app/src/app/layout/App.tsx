@@ -1,4 +1,4 @@
-import { Container } from "semantic-ui-react";
+import { Container, ModalContent } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { observer } from "mobx-react-lite";
@@ -34,6 +34,7 @@ function App() {
   return (
     <>
       <ToastContainer position="bottom-right" hideProgressBar />
+      <ModalContent/>
       <Route exact path="/" component={HomePage} />
       <Route
         path={"/(.+)"}
