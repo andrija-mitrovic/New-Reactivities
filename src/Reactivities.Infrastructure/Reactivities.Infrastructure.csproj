@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Reactivities.Domain\Reactivities.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Config\" />
-  </ItemGroup>
-
 </Project>
