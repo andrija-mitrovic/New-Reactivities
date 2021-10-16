@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Reactivities.Application.DTOs;
 using Reactivities.Domain.Entities;
 
 namespace Reactivities.Application.Helpers
@@ -8,6 +9,7 @@ namespace Reactivities.Application.Helpers
         public MappingProfiles()
         {
             CreateMap<Activity, Activity>();
+            CreateMap<Activity, ActivityDto>();
         }
     }
 }
