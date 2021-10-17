@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Reactivities.Application.Features.Activities.Commands;
 using Reactivities.Application.Features.Activities.Queries;
 using Reactivities.Domain.Entities;
@@ -28,6 +29,7 @@ namespace Reactivities.WebAPI.Controllers
             return HandleResult(await Mediator.Send(new CreateActivityCommand { Activity = activity }, cancellationToken));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Activity activity, CancellationToken cancellationToken)
         {
@@ -35,6 +37,7 @@ namespace Reactivities.WebAPI.Controllers
             return HandleResult(await Mediator.Send(new EditActivityCommand { Activity = activity }, cancellationToken));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id, CancellationToken cancellationToken)
         {
