@@ -40,5 +40,11 @@ namespace Reactivities.WebAPI.Controllers
         {
             return HandleResult(await Mediator.Send(new DeleteActivityCommand { Id = id }, cancellationToken));
         }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id, CancellationToken cancellationToken)
+        {
+            return HandleResult(await Mediator.Send(new UpdateActivityAttendeesCommand { Id = id }, cancellationToken));
+        }
     }
 }

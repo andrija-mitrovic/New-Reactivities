@@ -4,10 +4,6 @@ using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Commands;
 using Reactivities.Application.Helpers;
 using Reactivities.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +34,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) Result<Unit>.Failure("Failed to update activity");
+            if (!result) return Result<Unit>.Failure("Failed to update activity");
 
             return Result<Unit>.Success(Unit.Value);
         }

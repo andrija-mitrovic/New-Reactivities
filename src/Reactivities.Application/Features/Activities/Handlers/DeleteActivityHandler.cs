@@ -33,7 +33,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) Result<Unit>.Failure("Failed to delete activity");
+            if (!result) return Result<Unit>.Failure("Failed to delete activity");
 
             return Result<Unit>.Success(Unit.Value);
         }
