@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Reactivities.Infrastructure.Data;
 using System;
 using System.Linq;
@@ -33,7 +34,10 @@ namespace Reactivities.Application.Security
             var activityId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
                 .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-            var activityAttendee = _dbContext.ActivityAttendees.FindAsync(userId, activityId).Result;
+            var activityAttendee = _dbContext.ActivityAttendees
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.AppUserId == userId && x.ActivityId == activityId)
+                .Result;
 
             if (activityAttendee == null) return Task.CompletedTask;
 
