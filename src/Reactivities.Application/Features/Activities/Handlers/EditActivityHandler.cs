@@ -34,8 +34,13 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) return Result<Unit>.Failure("Failed to update activity");
+            if (!result)
+            {
+                _logger.LogInformation("EditActivityHandler.Handle - Failed to update activity");
+                return Result<Unit>.Failure("Failed to update activity");
+            }
 
+            _logger.LogInformation("EditActivityHandler.Handle - Successfully edited activity");
             return Result<Unit>.Success(Unit.Value);
         }
     }

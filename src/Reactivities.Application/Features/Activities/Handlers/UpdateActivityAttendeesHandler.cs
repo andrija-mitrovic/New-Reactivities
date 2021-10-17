@@ -68,12 +68,12 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (result)
             {
-                _logger.LogInformation("Successfully updated ActivityAttendee");
+                _logger.LogInformation("UpdateActivityAttendeesHandler.Handle - Successfully updated ActivityAttendee");
                 return Result<Unit>.Success(Unit.Value);
             }
             else 
             {
-                _logger.LogInformation("Problem updating ActivityAttendee");
+                _logger.LogInformation("UpdateActivityAttendeesHandler.Handle - Problem updating ActivityAttendee");
                 return Result<Unit>.Failure("Problem updating ActivityAttendee"); 
             }
         }

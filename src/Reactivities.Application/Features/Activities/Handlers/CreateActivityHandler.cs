@@ -43,8 +43,13 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) return Result<Unit>.Failure("Failed to create activity");
+            if (!result) 
+            {
+                _logger.LogInformation("CreateActivityHandler.Handler - Failed to create activity");
+                return Result<Unit>.Failure("Failed to create activity");
+            }
 
+            _logger.LogInformation("CreateActivityHandler.Handler - Successfully created activity");
             return Result<Unit>.Success(Unit.Value);
         }
     }
