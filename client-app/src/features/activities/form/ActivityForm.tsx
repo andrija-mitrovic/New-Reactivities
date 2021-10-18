@@ -12,14 +12,13 @@ import { categoryOptions } from "../../../app/common/options/categoryOptions";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import MyDateInput from "../../../app/common/form/MyDateInput";
-import { Activity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import { v4 as uuid } from "uuid";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
   const { activityStore } = useStore();
   const {
-    loading,
     updateActivity,
     createActivity,
     loadActivity,
@@ -27,15 +26,7 @@ export default observer(function ActivityForm() {
   } = activityStore;
   const { id } = useParams<{ id: string }>();
 
-  const [activity, setActivity] = useState<Activity>({
-    id: "",
-    title: "",
-    category: "",
-    description: "",
-    date: null,
-    city: "",
-    venue: "",
-  });
+  const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
   const validationSchema = Yup.object({
     title: Yup.string().required("The activity title is required"),
@@ -50,8 +41,8 @@ export default observer(function ActivityForm() {
     if (id) loadActivity(id).then((activity) => setActivity(activity!));
   }, [id, loadActivity]);
 
-  function handleFormSubmit(activity: Activity) {
-    if (activity.id.length === 0) {
+  function handleFormSubmit(activity: ActivityFormValues) {
+    if (!activity.id) {
       let newActivity = {
         ...activity,
         id: uuid(),
@@ -99,7 +90,7 @@ export default observer(function ActivityForm() {
             <MyTextInput placeholder="Venue" name="venue" />
             <Button
               disabled={isSubmitting || !dirty || !isValid}
-              loading={loading}
+              loading={isSubmitting}
               floated="right"
               positive
               type="submit"
