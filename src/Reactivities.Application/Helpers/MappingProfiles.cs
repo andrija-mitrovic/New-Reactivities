@@ -11,7 +11,8 @@ namespace Reactivities.Application.Helpers
         {
             CreateMap<Activity, Activity>();
             CreateMap<Activity, ActivityDto>()
-                .ForMember(x => x.HostUsername, 
+                .ForMember(x => x.Profiles, y => y.MapFrom(z => z.ActivityAttendees))
+                .ForMember(x => x.HostUsername,
                     y => y.MapFrom(z => z.ActivityAttendees.FirstOrDefault(w => w.IsHost).AppUser.UserName));
             CreateMap<ActivityAttendee, ProfileDto>()
                 .ForMember(x => x.DisplayName, y => y.MapFrom(z => z.AppUser.DisplayName))

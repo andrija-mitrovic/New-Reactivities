@@ -30,16 +30,19 @@ namespace Reactivities.Application.Features.Activities.Handlers
         {
             _logger.LogInformation("CreateActivityHandler.Handler - Creating activity.");
 
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername(), cancellationToken);
+            var user = await _context.Users.FirstOrDefaultAsync(x => 
+                x.UserName == _userAccessor.GetUsername(), cancellationToken);
 
-            var attendee = new ActivityAttendee
+            var activityAttendee = new ActivityAttendee
             {
                 AppUser = user,
                 Activity = request.Activity,
                 IsHost = true
             };
 
-            request.Activity.ActivityAttendees.Add(attendee);
+            request.Activity.ActivityAttendees.Add(activityAttendee);
+
+            _context.Activities.Add(request.Activity);
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.Features.Activities.Commands;
@@ -12,12 +13,15 @@ namespace Reactivities.Application.Features.Activities.Handlers
     public class EditActivityHandler : IRequestHandler<EditActivityCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
         private readonly ILogger<EditActivityHandler> _logger;
 
         public EditActivityHandler(ApplicationDbContext context,
+            IMapper mapper,
             ILogger<EditActivityHandler> logger)
         {
             _context = context;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -30,7 +34,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (activity == null) return null;
 
-            activity.Id = request.Activity.Id;
+            _mapper.Map(request.Activity, activity);
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

@@ -13,7 +13,7 @@ export interface Activity {
     isGoing: boolean;
     isHost: boolean;
     host?: Profile;
-    attendees: Profile[];
+    profiles: Profile[];
 }
 
 export class Activity implements Activity{
@@ -31,7 +31,7 @@ export class ActivityFormValues {
     city: string = '';
     venue: string = '';
 
-    constructor(activity?: Activity) {
+    constructor(activity?: ActivityFormValues) {
         if (activity) {
             this.id = activity.id;
             this.title = activity.title
