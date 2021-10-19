@@ -63,18 +63,18 @@ namespace Reactivities.Application.Services
 
         public async Task<string> DeletePhoto(string publicId)
         {
-            _logger.LogInformation("PhotoService.AddPhoto - Deleting photo from Cloudinary.");
+            _logger.LogInformation("PhotoService.DeletePhoto - Deleting photo from Cloudinary.");
 
             var deleteParams = new DeletionParams(publicId);
             var result = await _cloudinary.DestroyAsync(deleteParams);
 
             if(result.Result == "ok")
             {
-                _logger.LogInformation("PhotoService.AddPhoto - Photo deleted successfully from Cloudinary.");
+                _logger.LogInformation("PhotoService.DeletePhoto - Photo deleted successfully from Cloudinary.");
                 return result.Result;
             }
 
-            _logger.LogInformation("PhotoService.AddPhoto - Failed to delete photo from cloudinary");
+            _logger.LogInformation("PhotoService.DeletePhoto - Failed to delete photo from cloudinary");
             return null;
         }
     }

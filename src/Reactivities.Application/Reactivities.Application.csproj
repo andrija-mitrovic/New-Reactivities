@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Reactivities.Infrastructure\Reactivities.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Photos\" />
+  </ItemGroup>
+
 </Project>
