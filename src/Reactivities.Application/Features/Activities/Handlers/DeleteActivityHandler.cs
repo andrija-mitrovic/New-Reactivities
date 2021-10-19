@@ -23,11 +23,15 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
         public async Task<Result<Unit>> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"DeleteActivityHandler.Handle - Deleteing activity with id={request.Id}.");
+            _logger.LogInformation($"DeleteActivityHandler.Handle - Deleting activity with id={request.Id}.");
 
             var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (activity == null) return null;
+            if (activity == null)
+            {
+                _logger.LogError("DeleteActivityHandler.Handle - Activity couldn't be found.");
+                return null;
+            }
 
             _context.Activities.Remove(activity);
 
@@ -35,7 +39,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (!result) 
             {
-                _logger.LogInformation("DeleteActivityHandler.Handle - Failed to delete activity");
+                _logger.LogError("DeleteActivityHandler.Handle - Failed to delete activity");
                 return Result<Unit>.Failure("Failed to delete activity"); 
             }
 

@@ -48,7 +48,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (!result) 
             {
-                _logger.LogInformation("CreateActivityHandler.Handler - Failed to create activity");
+                _logger.LogError("CreateActivityHandler.Handler - Failed to create activity");
                 return Result<Unit>.Failure("Failed to create activity");
             }
 

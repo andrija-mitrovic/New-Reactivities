@@ -36,11 +36,19 @@ namespace Reactivities.Application.Features.Activities.Handlers
                 .ThenInclude(x => x.AppUser)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (activity == null) return null;
+            if (activity == null)
+            {
+                _logger.LogError("UpdateActivityAttendeesHandler.Handle - Activity couldn't be found.");
+                return null;
+            }
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
-            if (user == null) return null;
+            if (user == null)
+            {
+                _logger.LogError("UpdateActivityAttendeesHandler.Handle - Current user couldn't be found.");
+                return null;
+            }
 
             var hostUsername = activity.ActivityAttendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 
@@ -73,7 +81,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
             }
             else 
             {
-                _logger.LogInformation("UpdateActivityAttendeesHandler.Handle - Problem updating ActivityAttendee");
+                _logger.LogError("UpdateActivityAttendeesHandler.Handle - Problem updating ActivityAttendee");
                 return Result<Unit>.Failure("Problem updating ActivityAttendee"); 
             }
         }

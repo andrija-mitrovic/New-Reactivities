@@ -32,7 +32,11 @@ namespace Reactivities.Application.Features.Activities.Handlers
             var activity = await _context.Activities
                 .FirstOrDefaultAsync(x => x.Id == request.Activity.Id, cancellationToken);
 
-            if (activity == null) return null;
+            if (activity == null)
+            {
+                _logger.LogError($"EditActivityHandler.Handle - Activity couldn't be found.");
+                return null;
+            }
 
             _mapper.Map(request.Activity, activity);
 
@@ -40,7 +44,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (!result)
             {
-                _logger.LogInformation("EditActivityHandler.Handle - Failed to update activity");
+                _logger.LogError("EditActivityHandler.Handle - Failed to update activity");
                 return Result<Unit>.Failure("Failed to update activity");
             }
 
