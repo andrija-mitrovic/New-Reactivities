@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Reactivities.Application.Features.Activities.Queries;
 using Reactivities.Application.Helpers;
+using Reactivities.Application.Interfaces;
+using Reactivities.Application.Services;
 using Reactivities.Infrastructure.Data;
 
 namespace Reactivities.WebAPI.Extensions
@@ -31,6 +33,8 @@ namespace Reactivities.WebAPI.Extensions
 
             services.AddMediatR(typeof(GetActivityListQuery).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IPhotoService, PhotoService>();
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }
