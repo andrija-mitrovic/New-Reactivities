@@ -38,6 +38,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             var activitiesDto = _mapper.Map<List<ActivityDto>>(activities);
 
+            _logger.LogInformation("GetActivityListHandler.Handle - Retrieved profiles successfully.");
             return Result<List<ActivityDto>>.Success(activitiesDto);
         }
     }
