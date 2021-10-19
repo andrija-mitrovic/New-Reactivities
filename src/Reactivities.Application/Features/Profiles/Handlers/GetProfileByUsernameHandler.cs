@@ -33,7 +33,7 @@ namespace Reactivities.Application.Features.Profiles.Handlers
             var user = await _context.Users
                 .Include(x => x.ActivityAttendees)
                 .ThenInclude(x => x.Activity)
-                .SingleOrDefaultAsync(x => x.UserName == request.Username);
+                .FirstOrDefaultAsync(x => x.UserName == request.Username, cancellationToken);
 
             var userDto = _mapper.Map<ProfileDto>(user);
 
