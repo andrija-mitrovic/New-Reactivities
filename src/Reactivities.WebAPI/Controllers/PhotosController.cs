@@ -18,5 +18,11 @@ namespace Reactivities.WebAPI.Controllers
         {
             return HandleResult(await Mediator.Send(new DeletePhotoCommand { Id = id }, cancellationToken));
         }
+
+        [HttpPost("{id}/setMain")]
+        public async Task<IActionResult> SetMain(string id, CancellationToken cancellationToken)
+        {
+            return HandleResult(await Mediator.Send(new SetMainPhotoCommand { Id = id }, cancellationToken));
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace Reactivities.Application.Features.Photos.Handlers
 
         public async Task<Result<Unit>> Handle(DeletePhotoCommand request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("DeletePhotoHandler.Handle - Deleting photo.");
+
             var user = await _context.Users.Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername(), cancellationToken);
 
