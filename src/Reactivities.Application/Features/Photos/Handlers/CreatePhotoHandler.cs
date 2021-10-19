@@ -36,7 +36,7 @@ namespace Reactivities.Application.Features.Photos.Handlers
             _logger.LogInformation("CreatePhotoHandler.Handle - Creating photo.");
 
             var user = await _context.Users.Include(x => x.Photos)
-                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername(), cancellationToken);
 
             if (user == null) 
             {
@@ -58,7 +58,7 @@ namespace Reactivities.Application.Features.Photos.Handlers
 
                 user.Photos.Add(photo);
 
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
                 if (result)
                 {
