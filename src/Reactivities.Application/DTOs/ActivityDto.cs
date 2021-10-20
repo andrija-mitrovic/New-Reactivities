@@ -13,6 +13,7 @@ namespace Reactivities.Application.DTOs
         public string City { get; set; }
         public string Venue { get; set; }
         public string HostUsername { get; set; }
-        public ICollection<ProfileDto> Profiles { get; set; }
+        public bool IsCancelled { get; set; }
+        public ICollection<AttendeeDto> Profiles { get; set; }
     }
 }

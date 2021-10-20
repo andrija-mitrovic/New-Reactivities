@@ -14,10 +14,13 @@ namespace Reactivities.Application.Helpers
                 .ForMember(x => x.Profiles, y => y.MapFrom(z => z.ActivityAttendees))
                 .ForMember(x => x.HostUsername,
                     y => y.MapFrom(z => z.ActivityAttendees.FirstOrDefault(w => w.IsHost).AppUser.UserName));
-            CreateMap<ActivityAttendee, ProfileDto>()
+            CreateMap<ActivityAttendee, AttendeeDto>()
                 .ForMember(x => x.DisplayName, y => y.MapFrom(z => z.AppUser.DisplayName))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.AppUser.UserName))
-                .ForMember(x => x.Bio, y => y.MapFrom(z => z.AppUser.Bio));
+                .ForMember(x => x.Bio, y => y.MapFrom(z => z.AppUser.Bio))
+                .ForMember(x => x.Image, y => y.MapFrom(z => z.AppUser.Photos.FirstOrDefault(w => w.IsMain).Url));
+            CreateMap<AppUser, ProfileDto>()
+                .ForMember(x=>x.Image, y=>y.MapFrom(z=>z.Photos.FirstOrDefault(w=>w.IsMain).Url));
         }
     }
 }
