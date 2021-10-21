@@ -35,6 +35,7 @@ namespace Reactivities.WebAPI.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IPhotoService, PhotoService>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            services.AddSignalR();
 
             return services;
         }
