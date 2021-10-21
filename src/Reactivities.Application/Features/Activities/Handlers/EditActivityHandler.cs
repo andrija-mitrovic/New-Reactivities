@@ -34,7 +34,7 @@ namespace Reactivities.Application.Features.Activities.Handlers
 
             if (activity == null)
             {
-                _logger.LogError($"EditActivityHandler.Handle - Activity couldn't be found.");
+                _logger.LogError($"EditActivityHandler.Handle - Activity couldn't be found with Id: {request.Activity.Id}.");
                 return null;
             }
 
