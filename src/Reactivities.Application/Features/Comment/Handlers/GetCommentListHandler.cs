@@ -36,7 +36,7 @@ namespace Reactivities.Application.Features.Comment.Handlers
             var comments = await _context.Comments
                 .Include(x => x.Activity)
                 .Where(x => x.Activity.Id == request.ActivityId)
-                .OrderBy(x => x.CreatedAt)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             var commentsDto = _mapper.Map<List<CommentDto>>(comments);
