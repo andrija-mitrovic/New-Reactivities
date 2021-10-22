@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.DTOs;
 using Reactivities.Application.Features.Followers.Queries;
 using Reactivities.Application.Helpers;
-using Reactivities.Domain.Entities;
+using Reactivities.Application.Interfaces;
 using Reactivities.Infrastructure.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,17 @@ namespace Reactivities.Application.Features.Followers.Handlers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
         private readonly ILogger<GetFollowersListCommand> _logger;
 
         public GetFollowersListCommand(ApplicationDbContext context, 
             IMapper mapper, 
+            IUserAccessor userAccessor,
             ILogger<GetFollowersListCommand> logger)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
             _logger = logger;
         }
 
@@ -35,26 +39,24 @@ namespace Reactivities.Application.Features.Followers.Handlers
 
             var profilesDto = new List<ProfileDto>();
 
-            List<AppUser> profiles = null;
-
             switch (request.Predicate)
             {
                 case "followers":
-                    profiles = await _context.UserFollowings.Include(x => x.Observer)
+                    profilesDto = await _context.UserFollowings
                         .Where(x => x.Target.UserName == request.Username)
                         .Select(x => x.Observer)
+                        .ProjectTo<ProfileDto>(_mapper.ConfigurationProvider, 
+                            new { currentUsername = _userAccessor.GetUsername() })
                         .ToListAsync(cancellationToken);
-
-                    profilesDto = _mapper.Map<List<ProfileDto>>(profiles);
 
                     break;
                 case "followering":
-                    profiles = await _context.UserFollowings.Include(x => x.Target)
+                    profilesDto = await _context.UserFollowings
                         .Where(x => x.Observer.UserName == request.Username)
                         .Select(x => x.Target)
+                        .ProjectTo<ProfileDto>(_mapper.ConfigurationProvider,
+                            new { currentUsername = _userAccessor.GetUsername() })
                         .ToListAsync(cancellationToken);
-
-                    profilesDto = _mapper.Map<List<ProfileDto>>(profiles);
 
                     break;
             }

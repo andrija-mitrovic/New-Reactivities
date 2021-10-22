@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Reactivities.Application.DTOs;
 using Reactivities.Application.Features.Activities.Queries;
 using Reactivities.Application.Helpers;
+using Reactivities.Application.Interfaces;
 using Reactivities.Infrastructure.Data;
 using System.Collections.Generic;
 using System.Threading;
@@ -16,14 +18,17 @@ namespace Reactivities.Application.Features.Activities.Handlers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
         private readonly ILogger<GetActivityListHandler> _logger;
 
         public GetActivityListHandler(ApplicationDbContext context,
             IMapper mapper,
+            IUserAccessor userAccessor,
             ILogger<GetActivityListHandler> logger)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
             _logger = logger;
         }
 
@@ -31,12 +36,10 @@ namespace Reactivities.Application.Features.Activities.Handlers
         {
             _logger.LogInformation("GetActivityListHandler.Handle - Retrieving activities.");
 
-            var activities = await _context.Activities
-                .Include(x => x.ActivityAttendees)
-                .ThenInclude(x => x.AppUser)
+            var activitiesDto = await _context.Activities
+                .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider,
+                    new { currentUsername = _userAccessor.GetUsername() })
                 .ToListAsync(cancellationToken);
-
-            var activitiesDto = _mapper.Map<List<ActivityDto>>(activities);
 
             _logger.LogInformation("GetActivityListHandler.Handle - Retrieved profiles successfully.");
             return Result<List<ActivityDto>>.Success(activitiesDto);
