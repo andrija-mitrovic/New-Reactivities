@@ -37,7 +37,7 @@ namespace Reactivities.Application.Features.Comment.Handlers
                 .Include(x => x.Activity)
                 .Where(x => x.Activity.Id == request.ActivityId)
                 .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             var commentsDto = _mapper.Map<List<CommentDto>>(comments);
 
