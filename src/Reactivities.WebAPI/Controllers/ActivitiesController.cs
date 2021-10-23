@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Reactivities.Application.Features.Activities.Commands;
 using Reactivities.Application.Features.Activities.Queries;
+using Reactivities.Application.Helpers;
 using Reactivities.Domain.Entities;
 using System;
 using System.Threading;
@@ -12,9 +13,9 @@ namespace Reactivities.WebAPI.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetActivities(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetActivities([FromQuery] PagingParams param, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new GetActivityListQuery(), cancellationToken));
+            return HandlePagedResult(await Mediator.Send(new GetActivityListQuery { Params = param }, cancellationToken));
         }
 
         [HttpGet("{id}")]
