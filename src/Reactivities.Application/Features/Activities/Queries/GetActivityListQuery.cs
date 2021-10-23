@@ -6,6 +6,6 @@ namespace Reactivities.Application.Features.Activities.Queries
 {
     public class GetActivityListQuery : IRequest<Result<PagedList<ActivityDto>>>
     {
-        public PagingParams Params { get; set; }
+        public ActivityParams Params { get; set; }
     }
 }

@@ -36,10 +36,21 @@ namespace Reactivities.Application.Features.Activities.Handlers
             _logger.LogInformation("GetActivityListHandler.Handle - Retrieving activities.");
 
             var query = _context.Activities
+                .Where(x => x.Date >= request.Params.StartDate)
                 .OrderBy(x => x.Date)
                 .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider,
                     new { currentUsername = _userAccessor.GetUsername() })
                 .AsQueryable();
+
+            if (request.Params.IsGoing && !request.Params.IsHost)
+            {
+                query = query.Where(x => x.Profiles.Any(x => x.Username == _userAccessor.GetUsername()));
+            }
+
+            if (request.Params.IsHost && !request.Params.IsGoing)
+            {
+                query = query.Where(x => x.HostUsername == _userAccessor.GetUsername());
+            }
 
             _logger.LogInformation("GetActivityListHandler.Handle - Retrieved profiles successfully.");
             return Result<PagedList<ActivityDto>>.Success(
