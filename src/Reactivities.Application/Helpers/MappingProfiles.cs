@@ -35,6 +35,13 @@ namespace Reactivities.Application.Helpers
                 .ForMember(x => x.DisplayName, y => y.MapFrom(z => z.Author.DisplayName))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Author.UserName))
                 .ForMember(x => x.Image, y => y.MapFrom(z => z.Author.Photos.FirstOrDefault(w => w.IsMain).Url));
+            CreateMap<ActivityAttendee, UserActivityDto>()
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.Activity.Id))
+                .ForMember(x => x.Date, y => y.MapFrom(z => z.Activity.Date))
+                .ForMember(x => x.Title, y => y.MapFrom(z => z.Activity.Title))
+                .ForMember(x => x.Category, y => y.MapFrom(z => z.Activity.Category))
+                .ForMember(x => x.HostUsername, y => y.MapFrom(z =>
+                        z.Activity.ActivityAttendees.FirstOrDefault(x => x.IsHost).AppUser.UserName));
         }
     }
 }

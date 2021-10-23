@@ -12,5 +12,11 @@ namespace Reactivities.WebAPI.Controllers
         {
             return HandleResult(await Mediator.Send(new GetProfileByUsernameQuery { Username = username }, cancellationToken));
         }
+
+        [HttpGet("{username}/activities")]
+        public async Task<IActionResult> GetUserActivities(string username, string predicate)
+        {
+            return HandleResult(await Mediator.Send(new GetListActivityQuery { Username = username, Predicate = predicate }));
+        }
     }
 }
